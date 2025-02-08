@@ -1,0 +1,78 @@
+const Quotation = require("../models/quotation");
+
+const getAllQuotations = async (req, res) => {
+  try {
+    const quotations = await Quotation.getAllQuotations();
+    res.json(quotations);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error retrieving quotations");
+  }
+};
+
+const getQuotationByQuotationNo = async (req, res) => {
+  const quotationno = parseInt(req.params.quotationno);
+  try {
+    const quotation = await Quotation.getQuotationByQuotationNo(quotationno);
+    if (!quotation) {
+      return res.status(404).send("Quotation not found");
+    }
+    res.json(quotation);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error retrieving quotation");
+  }
+};
+
+const createQuotation = async (req, res) => {
+  const newQuotation = req.body;
+  try {
+    const createdQuotation = await Quotation.createQuotation(newQuotation);
+    res.status(201).json(createdQuotation);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error creating quotation");
+  }
+};
+
+const updateQuotation = async (req, res) => {
+  const quotationno = parseInt(req.params.quotationno);
+  const newQuotationData = req.body;
+
+  try {
+    const updatedQuotation = await Quotation.updateQuotation(
+      quotationno,
+      newQuotationData
+    );
+    if (!updatedQuotation) {
+      return res.status(404).send("Quotation not found");
+    }
+    res.json(updatedQuotationlist);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error updating quotation");
+  }
+};
+
+const deleteQuotation = async (req, res) => {
+  const quotationno = parseInt(req.params.quotationno);
+
+  try {
+    const success = await Quotation.deleteQuotation(quotationno);
+    if (!success) {
+      return res.status(404).send("Quotation not found");
+    }
+    res.status(204).send();
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error deleting quotation");
+  }
+};
+
+module.exports = {
+  getAllQuotations,
+  getQuotationByQuotationNo,
+  createQuotation,
+  updateQuotation,
+  deleteQuotation,
+};
