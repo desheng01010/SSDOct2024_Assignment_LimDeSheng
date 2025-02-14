@@ -13,6 +13,8 @@ const quotationsController = require("./controllers/quotationsController");
 const validateQuotation = require("./middlewares/validateQuotation");
 const invoicesController = require("./controllers/invoicesController");
 const validateInvoice = require("./middlewares/validateInvoice");
+const staffsController = require("./controllers/staffsController");
+const validateStaff = require("./middlewares/validateStaff");
 
 /*Instantiate the Express app*/
 const app = express();
@@ -87,6 +89,12 @@ app.put(
   invoicesController.updateInvoice
 ); // PUT for updating Invoices
 app.delete("/invoices/:invoiceno", invoicesController.deleteInvoice); // DELETE for deleting Invoices
+
+app.get("/staffs", staffsController.getAllStaffs); // Routes for GET requests
+app.get("/staffs/:staffid", staffsController.getStaffByStaffId);
+app.post("/staffs", validateStaff, staffsController.createStaff); // POST for creating staffs (can handle JSON data)
+app.put("/staffs/:staffid", validateStaff, staffsController.updateStaff); // PUT for updating staffs
+app.delete("/staffs/:staffid", staffsController.deleteStaff); // DELETE for deleting staffs
 
 app.listen(port, async () => {
   try {
