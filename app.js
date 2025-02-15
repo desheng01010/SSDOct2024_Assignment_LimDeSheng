@@ -17,6 +17,8 @@ const staffsController = require("./controllers/staffsController");
 const validateStaff = require("./middlewares/validateStaff");
 //const staticMiddleware = express.static("public"); // Path to the public folder
 const authorizeStaff = require("./middlewares/authorizeStaff");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger-output.json"); // Import generated spec
 
 /*Instantiate the Express app*/
 const app = express();
@@ -25,6 +27,9 @@ const port = 3000; // Use environment variable
 // Include body-parser middleware to handle JSON data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // For form data handling
+
+// Serve the Swagger UI at a specific route
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get("/legends", legendsController.getAllLegends); // Routes for GET requests
 app.get("/legends/:legendcode", legendsController.getLegendByLegendCode);
