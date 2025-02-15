@@ -52,12 +52,13 @@ class Invoice {
       : null; // Handle invoice not found
   }
 
-  static async createQuotation(newInvoiceData) {
+  static async createInvoice(newInvoiceData) {
     const connection = await sql.connect(dbConfig);
 
-    const sqlQuery = `INSERT INTO Invoices (quotationno, invoicedate, paymentstatus, paymentdate) VALUES (@quotationno, @invoicedate, @paymentstatus, @paymentdate); SELECT SCOPE_IDENTITY() AS invoiceno;`; // Retrieve invoiceno of inserted record
+    const sqlQuery = `INSERT INTO Invoices (invoiceno,quotationno, invoicedate, paymentstatus, paymentdate) VALUES (@invoiceno, @quotationno, @invoicedate, @paymentstatus, @paymentdate);`;
 
     const request = connection.request();
+    request.input("invoiceno", newInvoiceData.invoiceno);
     request.input("quotationno", newInvoiceData.quotationno);
     request.input("invoicedate", newInvoiceData.invoicedate);
     request.input("paymentstatus", newInvoiceData.paymentstatus);
@@ -67,8 +68,7 @@ class Invoice {
 
     connection.close();
 
-    // Retrieve the newly created invoice using its invoice id
-    return this.getInvoiceByInvoiceNo(result.recordset[0].invoiceno);
+    return this.getInvoiceByInvoiceNo(newInvoiceData.invoiceno);
   }
 
   static async updateInvoice(invoiceno, newInvoiceData) {

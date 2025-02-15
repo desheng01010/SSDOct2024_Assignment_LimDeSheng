@@ -11,7 +11,7 @@ const getAllContactlists = async (req, res) => {
 };
 
 const getContactlistByLandlordId = async (req, res) => {
-  const landlordid = parseInt(req.params.landlordid);
+  const landlordid = req.params.landlordid;
   try {
     const contactlist = await Contactlist.getContactlistByLandlordId(
       landlordid
@@ -40,7 +40,7 @@ const createContactlist = async (req, res) => {
 };
 
 const updateContactlist = async (req, res) => {
-  const landlordid = parseInt(req.params.lanlordid);
+  const landlordid = req.params.lanlordid;
   const newContactlistData = req.body;
 
   try {
@@ -59,7 +59,7 @@ const updateContactlist = async (req, res) => {
 };
 
 const deleteContactlist = async (req, res) => {
-  const landlordid = parseInt(req.params.landlordid);
+  const landlordid = req.params.landlordid;
 
   try {
     const success = await Contactlist.deleteContactlist(landlordid);

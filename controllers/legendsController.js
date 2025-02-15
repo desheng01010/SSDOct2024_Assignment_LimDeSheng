@@ -11,7 +11,7 @@ const getAllLegends = async (req, res) => {
 };
 
 const getLegendByLegendCode = async (req, res) => {
-  const legendCode = parseInt(req.params.legendcode);
+  const legendCode = req.params.legendcode;
   try {
     const legend = await Legend.getLegendByLegendCode(legendCode);
     if (!legend) {
@@ -36,7 +36,7 @@ const createLegend = async (req, res) => {
 };
 
 const updateLegend = async (req, res) => {
-  const legendCode = parseInt(req.params.legendcode);
+  const legendCode = req.params.legendcode;
   const newLegendData = req.body;
 
   try {
@@ -52,7 +52,7 @@ const updateLegend = async (req, res) => {
 };
 
 const deleteLegend = async (req, res) => {
-  const legendCode = parseInt(req.params.legendcode);
+  const legendCode = req.params.legendcode;
 
   try {
     const success = await Legend.deleteLegend(legendCode);

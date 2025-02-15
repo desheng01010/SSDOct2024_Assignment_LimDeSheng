@@ -11,7 +11,7 @@ const getAllQuotations = async (req, res) => {
 };
 
 const getQuotationByQuotationNo = async (req, res) => {
-  const quotationno = parseInt(req.params.quotationno);
+  const quotationno = req.params.quotationno;
   try {
     const quotation = await Quotation.getQuotationByQuotationNo(quotationno);
     if (!quotation) {
@@ -36,7 +36,7 @@ const createQuotation = async (req, res) => {
 };
 
 const updateQuotation = async (req, res) => {
-  const quotationno = parseInt(req.params.quotationno);
+  const quotationno = req.params.quotationno;
   const newQuotationData = req.body;
 
   try {
@@ -55,7 +55,7 @@ const updateQuotation = async (req, res) => {
 };
 
 const deleteQuotation = async (req, res) => {
-  const quotationno = parseInt(req.params.quotationno);
+  const quotationno = req.params.quotationno;
 
   try {
     const success = await Quotation.deleteQuotation(quotationno);

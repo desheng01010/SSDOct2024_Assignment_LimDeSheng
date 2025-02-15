@@ -2,8 +2,8 @@ const Joi = require("joi");
 
 const validateQuotation = (req, res, next) => {
   const schema = Joi.object({
-    legendcode: Joi.string().min(3).max(50).required(),
-    buildingcode: Joi.string().min(3).max(50).required(),
+    legendcode: Joi.string().min(1).max(50).required(),
+    buildingcode: Joi.string().min(1).max(50).required(),
     jobdescription: Joi.string().min(3).max(20).required(),
     quotationdate: Joi.string().min(3).max(50).required(),
     amount: Joi.string().min(3).max(50).required(),

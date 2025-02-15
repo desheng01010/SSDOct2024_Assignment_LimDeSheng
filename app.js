@@ -15,6 +15,8 @@ const invoicesController = require("./controllers/invoicesController");
 const validateInvoice = require("./middlewares/validateInvoice");
 const staffsController = require("./controllers/staffsController");
 const validateStaff = require("./middlewares/validateStaff");
+//const staticMiddleware = express.static("public"); // Path to the public folder
+const authorizeStaff = require("./middlewares/authorizeStaff");
 
 /*Instantiate the Express app*/
 const app = express();
@@ -63,32 +65,56 @@ app.delete(
   contactlistsController.deleteContactlist
 ); // DELETE for deleting contact lists
 
-app.get("/quotations", quotationsController.getAllQuotations); // Routes for GET requests
+app.get("/quotations", authorizeStaff, quotationsController.getAllQuotations); // Routes for GET requests
 app.get(
   "/quotations/:quotationno",
+  authorizeStaff,
   quotationsController.getQuotationByQuotationNo
 );
 app.post(
   "/quotations",
+  authorizeStaff,
   validateQuotation,
   quotationsController.createQuotation
 ); // POST for creating quotations (can handle JSON data)
 app.put(
   "/quotations/:quotationno",
+  authorizeStaff,
   validateQuotation,
   quotationsController.updateQuotation
 ); // PUT for updating quotations
-app.delete("/quotations/:quotationno", quotationsController.deleteQuotation); // DELETE for deleting Quotations
+app.delete(
+  "/quotations/:quotationno",
+  authorizeStaff,
+  quotationsController.deleteQuotation
+); // DELETE for deleting Quotations
 
-app.get("/invoices", invoicesController.getAllInvoices); // Routes for GET requests
-app.get("/invoices/:invoiceno", invoicesController.getInvoiceByInvoiceNo);
-app.post("/invoices", validateInvoice, invoicesController.createInvoice); // POST for creating Invoices (can handle JSON data)
-app.put(
+app.get("/invoices", authorizeStaff, invoicesController.getAllInvoices); // Routes for GET requests
+app.get(
   "/invoices/:invoiceno",
+  authorizeStaff,
+  invoicesController.getInvoiceByInvoiceNo
+);
+app.post(
+  "/invoices",
+  authorizeStaff,
+  validateInvoice,
+  invoicesController.createInvoice
+); // POST for creating Invoices (can handle JSON data)
+app.put(
+  "/invoices/:invoice",
+  authorizeStaff,
   validateInvoice,
   invoicesController.updateInvoice
 ); // PUT for updating Invoices
-app.delete("/invoices/:invoiceno", invoicesController.deleteInvoice); // DELETE for deleting Invoices
+app.delete(
+  "/invoices/:invoiceno",
+  authorizeStaff,
+  invoicesController.deleteInvoice
+); // DELETE for deleting Invoices
+
+app.post("/staffs/register", staffsController.registerStaff);
+app.post("/staffs/login", staffsController.login);
 
 app.get("/staffs", staffsController.getAllStaffs); // Routes for GET requests
 app.get("/staffs/:staffid", staffsController.getStaffByStaffId);

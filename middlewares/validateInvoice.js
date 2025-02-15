@@ -2,9 +2,10 @@ const Joi = require("joi");
 
 const validateInvoice = (req, res, next) => {
   const schema = Joi.object({
+    invoiceno: Joi.string().min(3).max(50).required(),
     quotationno: Joi.string().min(3).max(50).required(),
     invoicedate: Joi.string().min(3).max(50).required(),
-    paymentstatus: Joi.string().min(3).max(20).required(),
+    paymentstatus: Joi.string().min(2).max(20).required(),
     paymentdate: Joi.string().min(3).max(50).required(),
   });
 

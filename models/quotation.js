@@ -65,21 +65,22 @@ class Quotation {
   static async createQuotation(newQuotationData) {
     const connection = await sql.connect(dbConfig);
 
-    const sqlQuery = `INSERT INTO Quotations (legendcode, buildingcode, jobdescription, quotationdate, amount) VALUES (@legendcode, @buildingcode, @jobdescription, @quotationdate, @amount); SELECT SCOPE_IDENTITY() AS quotationno;`; // Retrieve quotationno of inserted record
+    const sqlQuery = `INSERT INTO Quotations (quotationno,legendcode, buildingcode, jobdescription, quotationdate, amount) VALUES (@quotationno, @legendcode, @buildingcode, @jobdescription, @quotationdate, @amount);`;
 
     const request = connection.request();
+    request.input("quotationno", newQuotationData.quotationno);
     request.input("legendcode", newQuotationData.legendcode);
     request.input("buildingcode", newQuotationData.buildingcode);
     request.input("jobdescription", newQuotationData.jobdescription);
     request.input("quotationdate", newQuotationData.quotationdate);
     request.input("amount", newQuotationData.amount);
 
-    const result = await request.query(sqlQuery);
+    await request.query(sqlQuery);
 
     connection.close();
 
     // Retrieve the newly created quotation using its quotation id
-    return this.getQuotationByQuotationNo(result.recordset[0].quotationno);
+    return this.getQuotationByQuotationNo(newQuotationData.quotationno);
   }
 
   static async updateQuotation(quotationno, newQuotationData) {

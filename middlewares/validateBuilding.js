@@ -2,6 +2,7 @@ const Joi = require("joi");
 
 const validateBuilding = (req, res, next) => {
   const schema = Joi.object({
+    buildingcode: Joi.string().min(3).max(50).required(),
     buildingname: Joi.string().min(3).max(50).required(),
     address: Joi.string().min(3).max(100).required(),
   });

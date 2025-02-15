@@ -11,7 +11,7 @@ const getAllInvoices = async (req, res) => {
 };
 
 const getInvoiceByInvoiceNo = async (req, res) => {
-  const invoiceno = parseInt(req.params.invoiceno);
+  const invoiceno = req.params.invoiceno;
   try {
     const invoice = await Invoice.getInvoiceByInvoiceNo(invoiceno);
     if (!invoice) {
@@ -36,7 +36,7 @@ const createInvoice = async (req, res) => {
 };
 
 const updateInvoice = async (req, res) => {
-  const invoiceno = parseInt(req.params.invoiceno);
+  const invoiceno = req.params.invoiceno;
   const newInvoiceData = req.body;
 
   try {
@@ -55,7 +55,7 @@ const updateInvoice = async (req, res) => {
 };
 
 const deleteInvoice = async (req, res) => {
-  const invoiceno = parseInt(req.params.invoiceno);
+  const invoiceno = req.params.invoiceno;
 
   try {
     const success = await Invoice.deleteInvoice(invoiceno);

@@ -17,7 +17,7 @@ class Building {
     connection.close();
 
     return result.recordset.map(
-      (row) => new Building(row.buildingcode, row.buildingname)
+      (row) => new Building(row.buildingcode, row.buildingname, row.address)
     ); // Convert rows to Building objects
   }
 
@@ -44,9 +44,10 @@ class Building {
   static async createBuilding(newBuildingData) {
     const connection = await sql.connect(dbConfig);
 
-    const sqlQuery = `INSERT INTO Buildings (buildingname, address) VALUES (@buildingname, @address); SELECT SCOPE_IDENTITY() AS buildingcode;`; // Retrieve buildingcode of inserted record
+    const sqlQuery = `INSERT INTO Buildings (buildingcode, buildingname, address) VALUES (@buildingcode,@buildingname, @address);`;
 
     const request = connection.request();
+    request.input("buildingcode", newBuildingData.buildingcode);
     request.input("buildingname", newBuildingData.buildingname);
     request.input("address", newBuildingData.address);
 
@@ -55,7 +56,7 @@ class Building {
     connection.close();
 
     // Retrieve the newly created building using its building code
-    return this.getBuildingByBuildingCode(result.recordset[0].buildingcode);
+    return this.getBuildingByBuildingCode(newBuildingData.buildingcode);
   }
 
   static async updateBuilding(buildingcode, newBuildingData) {

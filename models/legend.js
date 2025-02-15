@@ -42,17 +42,18 @@ class Legend {
   static async createLegend(newLegendData) {
     const connection = await sql.connect(dbConfig);
 
-    const sqlQuery = `INSERT INTO Legends (description) VALUES (@description); SELECT SCOPE_IDENTITY() AS legendcode;`; // Retrieve legendcode of inserted record
+    const sqlQuery = `INSERT INTO Legends (legendcode,description) VALUES (@legendcode, @description);`;
 
     const request = connection.request();
+    request.input("legendcode", newLegendData.legendcode);
     request.input("description", newLegendData.description);
 
-    const result = await request.query(sqlQuery);
+    await request.query(sqlQuery);
 
     connection.close();
 
     // Retrieve the newly created legend using its legend code
-    return this.getLegendByLegendCode(result.recordset[0].legendcode);
+    return this.getLegendByLegendCode(newLegendData.legendcode);
   }
 
   static async updateLegend(legendcode, newLegendData) {

@@ -11,7 +11,7 @@ const getAllBuildings = async (req, res) => {
 };
 
 const getBuildingByBuildingCode = async (req, res) => {
-  const buildingCode = parseInt(req.params.buildingcode);
+  const buildingCode = req.params.buildingcode;
   try {
     const building = await Building.getBuildingByBuildingCode(buildingCode);
     if (!building) {
@@ -36,7 +36,7 @@ const createBuilding = async (req, res) => {
 };
 
 const updateBuilding = async (req, res) => {
-  const buildingCode = parseInt(req.params.buildingcode);
+  const buildingCode = req.params.buildingcode;
   const newBuildingData = req.body;
 
   try {
@@ -55,7 +55,7 @@ const updateBuilding = async (req, res) => {
 };
 
 const deleteBuilding = async (req, res) => {
-  const buildingCode = parseInt(req.params.buildingcode);
+  const buildingCode = req.params.buildingcode;
 
   try {
     const success = await Building.deleteBuilding(buildingCode);

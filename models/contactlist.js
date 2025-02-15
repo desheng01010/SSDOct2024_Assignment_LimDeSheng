@@ -55,9 +55,10 @@ class Contactlist {
   static async createContactlist(newContactlistData) {
     const connection = await sql.connect(dbConfig);
 
-    const sqlQuery = `INSERT INTO ContactLists (buildingcode, landlordname, contactno, email) VALUES (@buildingcode, @landlordname, @contactno, @email); SELECT SCOPE_IDENTITY() AS landlordid;`; // Retrieve landlordid of inserted record
+    const sqlQuery = `INSERT INTO ContactLists (landlordid,buildingcode, landlordname, contactno, email) VALUES (@landlordid,@buildingcode, @landlordname, @contactno, @email);`;
 
     const request = connection.request();
+    request.input("landlordid", newContactlistData.landlordid);
     request.input("buildingcode", newContactlistData.buildingcode);
     request.input("landlordname", newContactlistData.landlordname);
     request.input("contactno", newContactlistData.conntactno);
@@ -67,8 +68,7 @@ class Contactlist {
 
     connection.close();
 
-    // Retrieve the newly created contact using its landlord id
-    return this.getContactByLandlordId(result.recordset[0].landlordid);
+    return this.getContactByLandlordId(newContactlistData.landlordid);
   }
 
   static async updateContactlist(landlordid, newContactlistData) {
